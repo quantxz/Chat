@@ -16,6 +16,7 @@
         <button type="submit">Enviar</button>
     </form>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         const socket = new WebSocket('ws://localhost:3000');
 
@@ -23,6 +24,7 @@
             const messageElement = $('<div>').addClass('message');
             const authorElement = $('<strong>').text(message.author + ': ');
             const contentElement = $('<span>').text(message.message);
+
             messageElement.append(authorElement, contentElement);
             $('.messages').append(messageElement);
         }
@@ -53,6 +55,20 @@
             event.preventDefault();
             const author = $('.author').val();
             const message = $('input[name="message"]').val(); // Correção aqui
+            
+            if (author.length == 0 || message.length == 0) {
+                console.log('error')
+                return Swal.fire({
+                            title: 'Oops!',
+                            text: 'Não deixe campos vazios',
+                            icon: 'error',
+                            customClass: {
+                                confirmButton: 'my-button-class'
+                            },
+                            buttonsStyling: false
+                        });
+
+            }
 
             const messageObj = {
                 author: author,
